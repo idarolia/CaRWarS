@@ -2,7 +2,6 @@
 #include "keyboard.h"
 #include "mouse.h"
 #include "objLoader.h"
-#include "game.h"
 
 float multiplier;
 float angle;			
@@ -39,26 +38,26 @@ void renderScene(void) {
               0.0f, 100.0f, 0.0f);                            // Set the camera
 
   glPushMatrix();
-    glTranslatef(0, 0, 0);
+    glTranslatef(0.0f, 0.0f, -500.0f);
     glScalef(15,15,15);
     base.Draw();
   glPopMatrix();
 
   glPushMatrix();
-    glTranslatef(-200.0, 0, 0);
+    glTranslatef(-200.0f, 0.0f, -600.0f);
     glScalef(15,15,15);
     shed.Draw();
   glPopMatrix();
 
   glPushMatrix();
-    glTranslatef(-200.0, 0, 400.0);
+    glTranslatef(-200.0f, 0.0f, -400.0f);
     glScalef(15,15,15);
     wall.Draw();
   glPopMatrix();
 
   glPushMatrix();
-    glTranslatef(0,35,600);
-    glRotatef(300.0, 0.0, 1.0, 0.0);
+    glTranslatef(x,35.0f,z-250.0f);            //x and z are the position of the camera
+    glRotatef(-90.0, 0.0, 1.0, 0.0);
     glScalef(75,75,75);
     car.Draw();
   glPopMatrix();
@@ -117,7 +116,7 @@ int main(int argc, char **argv) {
 
 	angle = 0.0f;						      // angle of rotation for the camera direction
 	lx = 0.0f; lz = -1.0f;				// actual vector representing the camera's direction
-	x = 0.0f; z = 850.0f;				  // XZ position of the camera
+	x = 0.0f; z = 0.0f;				  // XZ position of the camera
 
 	deltaAngle = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
