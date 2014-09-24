@@ -37,25 +37,20 @@ void renderScene(void) {
               x+lx, 100.0f, z+lz, 
               0.0f, 100.0f, 0.0f);                            // Set the camera
 
-    
-    // glPushMatrix();
-    //   cube.Draw();
-    // glPopMatrix(); 
+  glPushMatrix();
+    glTranslatef(0, 0, 0);
+    glScalef(15,15,15);
+    map.Draw();
+  glPopMatrix();
 
-    glPushMatrix();
-      glTranslatef(0, 0, 0);
-      glScalef(15,15,15);
-      map.Draw();
-    glPopMatrix();
+  // glPushMatrix();
+  //   glTranslatef(0,35,600);
+  //   glRotatef(300.0, 0.0, 1.0, 0.0);
+  //   glScalef(75,75,75);
+  //   car.Draw();
+  // glPopMatrix();
 
-    glPushMatrix();
-      // glRotatef(60.0, 1.0, 0.0, 0.0);
-      glTranslatef(0,30,600);
-      glScalef(50,50,50);
-      car.Draw();
-    glPopMatrix();
-
-    glutSwapBuffers();
+  glutSwapBuffers();
 } 
 
 
@@ -68,11 +63,13 @@ void initialize (void){
     glDepthFunc( GL_LEQUAL );
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
-    GLfloat amb_light[] = { 0.1, 0.1, 0.1, 1.0 };
-    GLfloat diffuse[] = { 0.6, 0.6, 0.6, 1 };
+    GLfloat amb_light[] = { 0.2f, 0.2f, 0.2f, 1.0 };
+    GLfloat diffuse0[] = { 0.5f, 0.5f, 0.5f, 1 };
+    GLfloat lightPos0[] = {4.0f, 100.0f, 8.0f, 1.0 };
     GLfloat specular[] = { 0.7, 0.7, 0.3, 1 };
     glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse );
+    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse0 );
+    glLightfv( GL_LIGHT0, GL_POSITION, lightPos0);
     glLightfv( GL_LIGHT0, GL_SPECULAR, specular );
     glEnable( GL_LIGHT0 );
     glEnable( GL_COLOR_MATERIAL );
@@ -82,6 +79,7 @@ void initialize (void){
     glEnable( GL_DEPTH_TEST );
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0); 
+    glEnable(GL_NORMALIZE);
 }
 
 void changeSize(int w, int h) {
@@ -125,7 +123,7 @@ int main(int argc, char **argv) {
 	glutIdleFunc(renderScene);
 	initialize();
 
-	strcpy(filename , "../data/map.obj");
+	strcpy(filename , "../data/map_new.obj");
   map.Load(filename);
   strcpy(filename , "../data/cube.obj");
   cube.Load(filename);

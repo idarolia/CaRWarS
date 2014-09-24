@@ -64,47 +64,47 @@ int Model_OBJ::Load(char* filename)
 {
    string line;
    ifstream objFile (filename);  
-   if (objFile.is_open())                                      // If obj file is open, continue
+   if (objFile.is_open())                                                  // If obj file is open, continue
    {
-      objFile.seekg (0, ios::end);                             // Go to end of the file, 
-      long fileSize = objFile.tellg();                         // get file size
-      objFile.seekg (0, ios::beg);                             // we'll use this to register memory for our 3d model
+      objFile.seekg (0, ios::end);                                         // Go to end of the file, 
+      long fileSize = objFile.tellg();                                     // get file size
+      objFile.seekg (0, ios::beg);                                         // we'll use this to register memory for our 3d model
  
-      vertexBuffer = (float*) malloc (fileSize);                     // Allocate memory for the verteces
-      Faces_Triangles = (float*) malloc(fileSize*sizeof(float));        // Allocate memory for the triangles
-      normals  = (float*) malloc(fileSize*sizeof(float));               // Allocate memory for the normals
+      vertexBuffer = (float*) malloc (fileSize);                           // Allocate memory for the verteces
+      Faces_Triangles = (float*) malloc(fileSize*sizeof(float));           // Allocate memory for the triangles
+      normals  = (float*) malloc(fileSize*sizeof(float));                  // Allocate memory for the normals
  
-      int triangle_index = 0;                                  // Set triangle index to zero
-      int normal_index = 0;                                    // Set normal index to zero
+      int triangle_index = 0;                                              // Set triangle index to zero
+      int normal_index = 0;                                                // Set normal index to zero
  
-      while (! objFile.eof() )                                 // Start reading file data
+      while (! objFile.eof() )                                             // Start reading file data
       {     
-         getline (objFile,line);                               // Get line from file
+         getline (objFile,line);                                           // Get line from file
  
-         if (line.c_str()[0] == 'v')                              // The first character is a v: on this line is a vertex stored.
+         if (line.c_str()[0] == 'v')                                       // The first character is a v: on this line is a vertex stored.
          {
-            line[0] = ' ';                                  // Set first character to 0. This will allow us to use sscanf
+            line[0] = ' ';                                                 // Set first character to 0. This will allow us to use sscanf
  
-            sscanf(line.c_str(),"%f %f %f ",                   // Read floats from the line: v X Y Z
+            sscanf(line.c_str(),"%f %f %f ",                               // Read floats from the line: v X Y Z
                &vertexBuffer[TotalConnectedPoints],
                &vertexBuffer[TotalConnectedPoints+1], 
                &vertexBuffer[TotalConnectedPoints+2]);
  
-            TotalConnectedPoints += POINTS_PER_VERTEX;               // Add 3 to the total connected points
+            TotalConnectedPoints += POINTS_PER_VERTEX;                     // Add 3 to the total connected points
          }
-         else if (line.c_str()[0] == 'f')                              // The first character is an 'f': on this line is a point stored
+         else if (line.c_str()[0] == 'f')                                  // The first character is an 'f': on this line is a point stored
          {
-            line[0] = ' ';                                  // Set first character to 0. This will allow us to use sscanf
+            line[0] = ' ';                                                 // Set first character to 0. This will allow us to use sscanf
  
             int vertexNumber[4] = { 0, 0, 0 };
-            sscanf(line.c_str(),"%i%i%i",                        // Read integers from the line:  f 1 2 3
-            &vertexNumber[0],                            // First point of our triangle. This is an 
-            &vertexNumber[1],                            // pointer to our vertexBuffer list
-            &vertexNumber[2] );                             // each point represents an X,Y,Z.
+            sscanf(line.c_str(),"%i%i%i",                                  // Read integers from the line:  f 1 2 3
+            &vertexNumber[0],                                              // First point of our triangle. This is an 
+            &vertexNumber[1],                                              // pointer to our vertexBuffer list
+            &vertexNumber[2] );                                            // each point represents an X,Y,Z.
  
-            vertexNumber[0] -= 1;                              // OBJ file starts counting from 1
-            vertexNumber[1] -= 1;                              // OBJ file starts counting from 1
-            vertexNumber[2] -= 1;                              // OBJ file starts counting from 1
+            vertexNumber[0] -= 1;                                          // OBJ file starts counting from 1
+            vertexNumber[1] -= 1;                                          // OBJ file starts counting from 1
+            vertexNumber[2] -= 1;                                          // OBJ file starts counting from 1
  
  
             /********************************************************************
@@ -125,7 +125,7 @@ int Model_OBJ::Load(char* filename)
             /*********************************************************************
              * Calculate all normals, used for lighting
              */ 
-            float coord1[3] = { Faces_Triangles[triangle_index], Faces_Triangles[triangle_index+1],Faces_Triangles[triangle_index+2]};
+            float coord1[3] = {Faces_Triangles[triangle_index]  ,Faces_Triangles[triangle_index+1],Faces_Triangles[triangle_index+2]};
             float coord2[3] = {Faces_Triangles[triangle_index+3],Faces_Triangles[triangle_index+4],Faces_Triangles[triangle_index+5]};
             float coord3[3] = {Faces_Triangles[triangle_index+6],Faces_Triangles[triangle_index+7],Faces_Triangles[triangle_index+8]};
             float norm[3];
@@ -165,7 +165,7 @@ void Model_OBJ::Draw()
 {
    glEnableClientState(GL_VERTEX_ARRAY);                       // Enable vertex arrays
    glEnableClientState(GL_NORMAL_ARRAY);                       // Enable normal arrays
-   glVertexPointer(3,GL_FLOAT,   0,Faces_Triangles);           // Vertex Pointer to triangle array
+   glVertexPointer(3, GL_FLOAT, 0,Faces_Triangles);            // Vertex Pointer to triangle array
    glNormalPointer(GL_FLOAT, 0, normals);                      // Normal pointer to normal array
    glDrawArrays(GL_TRIANGLES, 0, TotalConnectedTriangles);     // Draw the triangles
    glDisableClientState(GL_VERTEX_ARRAY);                      // Disable vertex arrays
