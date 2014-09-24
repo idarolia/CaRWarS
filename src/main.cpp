@@ -12,8 +12,9 @@ float deltaAngle;
 float deltaMove;
 int xOrigin;
 
-Model_OBJ cube;
-Model_OBJ map;
+Model_OBJ shed;
+Model_OBJ base;
+Model_OBJ wall;
 Model_OBJ car;
 
 #include "global.h"
@@ -40,15 +41,27 @@ void renderScene(void) {
   glPushMatrix();
     glTranslatef(0, 0, 0);
     glScalef(15,15,15);
-    map.Draw();
+    base.Draw();
   glPopMatrix();
 
-  // glPushMatrix();
-  //   glTranslatef(0,35,600);
-  //   glRotatef(300.0, 0.0, 1.0, 0.0);
-  //   glScalef(75,75,75);
-  //   car.Draw();
-  // glPopMatrix();
+  glPushMatrix();
+    glTranslatef(-200.0, 0, 0);
+    glScalef(15,15,15);
+    shed.Draw();
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef(-200.0, 0, 400.0);
+    glScalef(15,15,15);
+    wall.Draw();
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef(0,35,600);
+    glRotatef(300.0, 0.0, 1.0, 0.0);
+    glScalef(75,75,75);
+    car.Draw();
+  glPopMatrix();
 
   glutSwapBuffers();
 } 
@@ -123,10 +136,12 @@ int main(int argc, char **argv) {
 	glutIdleFunc(renderScene);
 	initialize();
 
-	strcpy(filename , "../data/map_new.obj");
-  map.Load(filename);
-  strcpy(filename , "../data/cube.obj");
-  cube.Load(filename);
+	strcpy(filename , "../data/base.obj");
+  base.Load(filename);
+  strcpy(filename , "../data/shed.obj");
+  shed.Load(filename);
+  strcpy(filename , "../data/wall.obj");
+  wall.Load(filename);
   strcpy(filename , "../data/car.obj");
   car.Load(filename);
 
