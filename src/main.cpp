@@ -1,15 +1,15 @@
 #include "global.h"
 #include "keyboard.h"
-#include "mouse.h"
 #include "objLoader.h"
 
-float multiplier;
+#define pi 3.14159265359
+
 float angle;			
 float lx,lz;			
 float x, z;				
-float deltaAngle;
+float rotateCar;
+float deltaRotateCar;
 float deltaMove;
-int xOrigin;
 
 Model_OBJ shed;
 Model_OBJ base;
@@ -21,8 +21,9 @@ Model_OBJ car;
 #include "objLoader.h"
 
 void computePos(float deltaMove) {
-  x += deltaMove * lx * 0.1f;
-  z += deltaMove * lz * 0.1f;
+  rotateCar += deltaRotateCar;
+  x = x + deltaMove * cos(rotateCar*pi/180);
+  z = z - deltaMove * sin(rotateCar*pi/180);
 }
 
 void renderScene(void) {
@@ -31,11 +32,19 @@ void renderScene(void) {
     computePos(deltaMove);
   }
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);         // Clear Color and Depth Buffers
-  glLoadIdentity();                                           // Reset transformations
-  gluLookAt(  x   , 100.0f, z   ,                             //Change the camera position
-              x+lx, 100.0f, z+lz, 
-              0.0f, 100.0f, 0.0f);                            // Set the camera
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
+  glLoadIdentity();                                             // Reset transformations/*
+
+  gluLookAt(  0.0f, 50.0f, 0.0f,                                //Change the camera position
+              0.0f, 50.0f,-1.0f,                                //Change Lookat vector
+              0.0f, 50.0f, 0.0f );                              //Change Up vector*/
+
+  glPushMatrix();
+    glTranslatef(x,0.0f,z-250.0f);
+    glRotatef(-180.0 + rotateCar, 0.0, 1.0, 0.0);
+    glScalef(75,75,75);
+    car.Draw();
+  glPopMatrix();
 
   glPushMatrix();
     glTranslatef(0.0f, 0.0f, -500.0f);
@@ -53,13 +62,6 @@ void renderScene(void) {
     glTranslatef(-200.0f, 0.0f, -400.0f);
     glScalef(15,15,15);
     wall.Draw();
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(x,35.0f,z-250.0f);            //x and z are the position of the camera
-    glRotatef(-90.0, 0.0, 1.0, 0.0);
-    glScalef(75,75,75);
-    car.Draw();
   glPopMatrix();
 
   glutSwapBuffers();
@@ -112,15 +114,13 @@ int main(int argc, char **argv) {
 
 	char filename[100];
 
-	multiplier = 50;
-
 	angle = 0.0f;						      // angle of rotation for the camera direction
 	lx = 0.0f; lz = -1.0f;				// actual vector representing the camera's direction
 	x = 0.0f; z = 0.0f;				  // XZ position of the camera
 
-	deltaAngle = 0.0f;					  // the key states. These variables will be zero when no key is being presses
+  rotateCar = 90.0f;
+	deltaRotateCar = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
-	xOrigin = -1;
 
 	// init GLUT and create window
 	glutInit(&argc, argv);
@@ -149,11 +149,7 @@ int main(int argc, char **argv) {
 	glutSpecialFunc(pressKey);
 	glutSpecialUpFunc(releaseKey);
 
-	// here are the two new functions
-	glutMouseFunc(mouseButton);
-	glutMotionFunc(mouseMove);
-
-	// enter GLUT event processing cycle
+  // enter GLUT event processing cycle
 	glutMainLoop();
 
 	return 1;

@@ -11,16 +11,14 @@
 # include <GL/glut.h>
 # include "objLoader.h"
 
-extern float multiplier;
-
 extern float angle;				// angle of rotation for the camera direction
 extern float lx,lz;				// actual vector representing the camera's direction
-extern float x, z;					// XZ position of the camera
+extern float x, z;				// XZ position of the camera
+extern float rotateCar;
 
 // the key states. These variables will be zero when no key is being presses
-extern float deltaAngle;
 extern float deltaMove;
-extern int xOrigin;
+extern float deltaRotateCar;
 
 extern Model_OBJ obj;
 
