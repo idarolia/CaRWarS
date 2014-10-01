@@ -351,7 +351,7 @@ unsigned int objloader::loadTexture(const char* filename){
         glBindTexture(GL_TEXTURE_2D,num);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,img->w,img->h,0, GL_RGB, GL_UNSIGNED_BYTE,img->pixels);
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,img->w,img->h,0, GL_RGBA, GL_FLOAT,img->pixels);
         glTexEnvi(GL_TEXTURE_2D,GL_TEXTURE_ENV_MODE,GL_MODULATE);       //maybe just this
         SDL_FreeSurface(img);
         texture.push_back(num);

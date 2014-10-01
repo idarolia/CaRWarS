@@ -11,8 +11,13 @@ void pressKey(int key, int xx, int yy) {
   switch (key) {
     case GLUT_KEY_UP    : deltaMove = 10.0f; break;
     case GLUT_KEY_DOWN  : deltaMove = -10.0f; break;
-    case GLUT_KEY_LEFT   : deltaRotate = 1.5f; break;
-    case GLUT_KEY_RIGHT  : deltaRotate = -1.5f; break;
+    case GLUT_KEY_LEFT  : deltaRotate = 1.5f; break;
+    case GLUT_KEY_RIGHT : deltaRotate = -1.5f; break;
+    case GLUT_KEY_F10   : if( Mix_PausedMusic() == 1 )
+                            Mix_ResumeMusic();
+                          else
+                            Mix_PauseMusic();
+                          break;
   }
 } 
 

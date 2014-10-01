@@ -1,6 +1,6 @@
 #include "global.h"
-#include "keyboard.h"
 #include "objLoader.h"
+#include "keyboard.h"
 #include "main.h"
 
 #define pi 3.14159265359
@@ -12,14 +12,55 @@ float rotateCar, rotateCamera;
 float deltaRotate;
 float deltaMove;
 
+Mix_Music *gMusic = NULL;
 
-int CAR,SHED,WALL,BASE,CUBE;
+int CAR,SHED,WALL,BASE,FLOOR,SIDE;
 objloader shed;
 objloader base;
 objloader wall;
 objloader car;
-objloader cube;
+objloader flooor;
+objloader side;
 
+bool init()
+{
+  //Initialization flag
+  bool success = true;
+
+  //Initialize SDL
+  if( SDL_Init(SDL_INIT_VIDEO |SDL_INIT_AUDIO) < 0 )
+  {
+    printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+    success = false;
+  }
+  if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+  {
+    printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    success = false;
+  }
+  return success;
+}
+
+bool loadMedia()
+{
+  //Loading success flag
+  bool success = true;
+  gMusic = Mix_LoadMUS( "../data/sound/beat.wav" );
+  if( gMusic == NULL )
+  {
+    printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+    success = false;
+  }
+  return success;
+}
+
+void close()
+{
+  Mix_FreeMusic( gMusic );
+  gMusic = NULL;
+  Mix_Quit();
+  SDL_Quit();
+}
 
 void computePos(float deltaMove) {
   if(deltaMove>0){
@@ -45,10 +86,10 @@ void renderScene(void) {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
   glLoadIdentity();                                             // Reset transformations/*
-  gluLookAt(x , 800.0f, z+100,                                 //Change the camera position
-            rx, 800.0f, rz,                                     //Change Lookat vector
+  gluLookAt(x , 100.0f, z,                                 //Change the camera position
+            rx, 100.0f, rz,                                     //Change Lookat vector
             // rotateCamera, 50.0f,-1.0f,                       //Change Lookat vector
-            0.0f, 800.0f, 0.0f );                               //Change Up vector*/
+            0.0f, 100.0f, 0.0f );                               //Change Up vector*/
 
   glPushMatrix();
     glTranslatef(x,0.0f,z-250.0f);
@@ -60,7 +101,34 @@ void renderScene(void) {
   glPushMatrix();
     glTranslatef(0.0f, 0.0f,0.0f);
     glScalef(2000,0,2000);
-    glCallList(CUBE);
+    glCallList(FLOOR);
+  glPopMatrix();
+
+  glPushMatrix();//left
+    glRotatef(-90.0, 0.0, 1.0, 0.0);
+    glTranslatef(0.0f, 1000.0f,2000.0f);
+    glScalef(2000,1000,0);
+    glCallList(SIDE);
+  glPopMatrix();
+
+  glPushMatrix();//back
+    glTranslatef(0.0f, 1000.0f,-2000.0f);
+    glScalef(2000,1000,0);
+    glCallList(SIDE);
+  glPopMatrix();
+
+  glPushMatrix();//right
+    glRotatef(-90.0, 0.0, 1.0, 0.0);
+    glTranslatef(0.0f, 1000.0f,-2000.0f);
+    glScalef(2000,1000,0);
+    glCallList(SIDE);
+  glPopMatrix();
+
+
+  glPushMatrix();//front
+    glTranslatef(0.0f, 1000.0f,2000.0f);
+    glScalef(2000,1000,0);
+    glCallList(SIDE);
   glPopMatrix();
 
   glPushMatrix();
@@ -161,6 +229,17 @@ int main(int argc, char **argv) {
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
 	initialize();
+  if( !init() ){
+    printf( "Failed to initialize!\n" );
+  }
+  else{
+    if( !loadMedia() ){
+      printf( "Failed to load media!\n" );
+    }
+    else{ 
+      Mix_PlayMusic( gMusic, -1 );
+    }
+  }
 
 	strcpy(filename , "../data/world1/base.obj");
   BASE = base.load(filename);
@@ -170,8 +249,10 @@ int main(int argc, char **argv) {
   WALL = wall.load(filename);
   strcpy(filename , "../data/characters/car.obj");
   CAR = car.load(filename);
-  strcpy(filename , "../data/world1/cube.obj");
-  CUBE = cube.load(filename);
+  strcpy(filename , "../data/world1/floor.obj");
+  FLOOR = flooor.load(filename);
+  strcpy(filename , "../data/world1/side.obj");
+  SIDE = side.load(filename);
 
 	glutIgnoreKeyRepeat(1);
 	glutKeyboardFunc(processNormalKeys);
