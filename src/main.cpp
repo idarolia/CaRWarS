@@ -14,13 +14,13 @@ float deltaMove;
 
 Mix_Music *gMusic = NULL;
 
-int CAR,SHED,WALL,BASE,FLOOR,SIDE;
+int CAR,SHED,WALL,BASE,FLOOR,SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
 objloader shed;
 objloader base;
 objloader wall;
 objloader car;
 objloader flooor;
-objloader side;
+objloader sideleft,sideright,sideback,sidefront;
 
 bool init()
 {
@@ -100,55 +100,62 @@ void renderScene(void) {
 
   glPushMatrix();
     glTranslatef(0.0f, 0.0f,0.0f);
-    glScalef(2000,0,2000);
+    glScalef(3000,0,3000);
     glCallList(FLOOR);
   glPopMatrix();
 
   glPushMatrix();//left
     glRotatef(-90.0, 0.0, 1.0, 0.0);
-    glTranslatef(0.0f, 1000.0f,2000.0f);
-    glScalef(2000,1000,0);
-    glCallList(SIDE);
+    glTranslatef(0.0f, 2000.0f,3000.0f);
+    glScalef(3000,2000,0);
+    glCallList(SIDELEFT);
   glPopMatrix();
 
   glPushMatrix();//back
-    glTranslatef(0.0f, 1000.0f,-2000.0f);
-    glScalef(2000,1000,0);
-    glCallList(SIDE);
+    glTranslatef(0.0f, 2000.0f,-3000.0f);
+    glScalef(3000,2000,0);
+    glCallList(SIDEBACK);
   glPopMatrix();
 
   glPushMatrix();//right
     glRotatef(-90.0, 0.0, 1.0, 0.0);
-    glTranslatef(0.0f, 1000.0f,-2000.0f);
-    glScalef(2000,1000,0);
-    glCallList(SIDE);
+    glTranslatef(0.0f, 2000.0f,-3000.0f);
+    glScalef(3000,2000,0);
+    glCallList(SIDERIGHT);
   glPopMatrix();
 
 
-  glPushMatrix();//front
-    glTranslatef(0.0f, 1000.0f,2000.0f);
-    glScalef(2000,1000,0);
-    glCallList(SIDE);
-  glPopMatrix();
+  // glPushMatrix();//front
+  //   glTranslatef(0.0f, 2000.0f,3000.0f);
+  //   glScalef(3000,2000,0);
+  //   glCallList(SIDEFRONT);
+  // glPopMatrix();
 
   glPushMatrix();
     glRotatef(-15.0, 0.0, 1.0, 0.0);
-    glTranslatef(-800.0f, 0.0f, 1500.0f);
+    glTranslatef(-1500.0f, 0.0f, 2500.0f);
     glScalef(300,300,100);
     glCallList(WALL);
   glPopMatrix();
 
   glPushMatrix();
-    glTranslatef(-2020.0f, 0.0f, -800.0f);
+    glRotatef(25.0, 0.0, 1.0, 0.0);
+    glTranslatef(0.0f, 0.0f, 2500.0f);
+    glScalef(300,300,100);
+    glCallList(WALL);
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef(-2410.0f, 0.0f, -800.0f);
     glRotatef(90.0, 0.0, 1.0, 0.0);
-    glScalef(400,400,400);
+    glScalef(150,100,200);
     glCallList(SHED);
   glPopMatrix();
 
   glPushMatrix();
-    glTranslatef(500.0f, 0.0f, -700.0f);
-    glRotatef(-80.0, 0.0, 1.0, 0.0);
-    glScalef(300,200,300);
+    glTranslatef(1000.0f, 0.0f,1500.0f);
+    glRotatef(80.0, 0.0, 1.0, 0.0);
+    glScalef(150,125,150);
     glCallList(BASE);
   glPopMatrix();
 
@@ -222,24 +229,24 @@ int main(int argc, char **argv) {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(1920,1080);
-	glutCreateWindow("Lighthouse3D - GLUT Tutorial");
+	glutCreateWindow("CaRWarS");
 
 	// register callbacks
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
 	initialize();
-  if( !init() ){
-    printf( "Failed to initialize!\n" );
-  }
-  else{
-    if( !loadMedia() ){
-      printf( "Failed to load media!\n" );
-    }
-    else{ 
-      Mix_PlayMusic( gMusic, -1 );
-    }
-  }
+  // if( !init() ){
+  //   printf( "Failed to initialize!\n" );
+  // }
+  // else{
+  //   if( !loadMedia() ){
+  //     printf( "Failed to load media!\n" );
+  //   }
+  //   else{ 
+  //     Mix_PlayMusic( gMusic, -1 );
+  //   }
+  // }
 
 	strcpy(filename , "../data/world1/base.obj");
   BASE = base.load(filename);
@@ -251,8 +258,14 @@ int main(int argc, char **argv) {
   CAR = car.load(filename);
   strcpy(filename , "../data/world1/floor.obj");
   FLOOR = flooor.load(filename);
-  strcpy(filename , "../data/world1/side.obj");
-  SIDE = side.load(filename);
+  strcpy(filename , "../data/world1/sideleft.obj");
+  SIDELEFT = sideleft.load(filename);
+  strcpy(filename , "../data/world1/sideright.obj");
+  SIDERIGHT = sideright.load(filename);
+  strcpy(filename , "../data/world1/sideback.obj");
+  SIDEBACK = sideback.load(filename);
+  strcpy(filename , "../data/world1/sidefront.obj");
+  SIDEFRONT = sidefront.load(filename);
 
 	glutIgnoreKeyRepeat(1);
 	glutKeyboardFunc(processNormalKeys);
