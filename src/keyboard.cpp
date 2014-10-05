@@ -1,6 +1,4 @@
 #include "global.h"
-#include "main.h"
-#include "objLoader.h"
 
 void processNormalKeys(unsigned char key, int xx, int yy) {   
   if (key == 27)

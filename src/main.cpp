@@ -1,9 +1,4 @@
 #include "global.h"
-#include "objLoader.h"
-#include "keyboard.h"
-#include "main.h"
-
-#define pi 3.14159265359
 
 float angle;			
 float lx,lz, rx, rz;			
@@ -11,218 +6,30 @@ float x, z, X, Z;
 float rotateCar, rotateCamera;
 float deltaRotate;
 float deltaMove;
+int worldNum;
 
-Mix_Music *gMusic = NULL;
-
-int CAR,SHED,WALL,BASE,FLOOR,SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
-objloader shed;
-objloader base;
-objloader wall;
 objloader car;
-objloader flooor;
 objloader sideleft,sideright,sideback,sidefront;
+objloader shed, base, wall, flooor;
+objloader world2;
 
-bool init()
-{
-  //Initialization flag
-  bool success = true;
-
-  //Initialize SDL
-  if( SDL_Init(SDL_INIT_VIDEO |SDL_INIT_AUDIO) < 0 )
-  {
-    printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
-    success = false;
-  }
-  if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
-  {
-    printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
-    success = false;
-  }
-  return success;
-}
-
-bool loadMedia()
-{
-  //Loading success flag
-  bool success = true;
-  gMusic = Mix_LoadMUS( "../data/sound/beat.wav" );
-  if( gMusic == NULL )
-  {
-    printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
-    success = false;
-  }
-  return success;
-}
-
-void close()
-{
-  Mix_FreeMusic( gMusic );
-  gMusic = NULL;
-  Mix_Quit();
-  SDL_Quit();
-}
-
-void computePos(float deltaMove) {
-  if(deltaMove>0){
-    rotateCar += deltaRotate;
-    rotateCamera -= deltaRotate*pi/180;
-  }else{
-    rotateCar -= deltaRotate;
-    rotateCamera += deltaRotate*pi/180;
-  }
-  lx = deltaMove * sin(rotateCar*pi/180);
-  lz = -deltaMove * cos(rotateCar*pi/180);
-  x = x + lx;
-  z = z - lz;
-  rx = rx + lx;
-  rz = rz - lz;
-}
-
-void renderScene(void) {
-  int i,j;
-  if (deltaMove){
-    computePos(deltaMove);
-  }
-
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
-  glLoadIdentity();                                             // Reset transformations/*
-  gluLookAt(x , 100.0f, z,                                 //Change the camera position
-            rx, 100.0f, rz,                                     //Change Lookat vector
-            // rotateCamera, 50.0f,-1.0f,                       //Change Lookat vector
-            0.0f, 100.0f, 0.0f );                               //Change Up vector*/
-
-  glPushMatrix();
-    glTranslatef(x,0.0f,z-250.0f);
-    glRotatef(rotateCar, 0.0, 1.0, 0.0);
-    glScalef(100,75,100);
-    glCallList(CAR);
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(0.0f, 0.0f,0.0f);
-    glScalef(3000,0,3000);
-    glCallList(FLOOR);
-  glPopMatrix();
-
-  glPushMatrix();//left
-    glRotatef(-90.0, 0.0, 1.0, 0.0);
-    glTranslatef(0.0f, 2000.0f,3000.0f);
-    glScalef(3000,2000,0);
-    glCallList(SIDELEFT);
-  glPopMatrix();
-
-  glPushMatrix();//back
-    glTranslatef(0.0f, 2000.0f,-3000.0f);
-    glScalef(3000,2000,0);
-    glCallList(SIDEBACK);
-  glPopMatrix();
-
-  glPushMatrix();//right
-    glRotatef(-90.0, 0.0, 1.0, 0.0);
-    glTranslatef(0.0f, 2000.0f,-3000.0f);
-    glScalef(3000,2000,0);
-    glCallList(SIDERIGHT);
-  glPopMatrix();
-
-
-  // glPushMatrix();//front
-  //   glTranslatef(0.0f, 2000.0f,3000.0f);
-  //   glScalef(3000,2000,0);
-  //   glCallList(SIDEFRONT);
-  // glPopMatrix();
-
-  glPushMatrix();
-    glRotatef(-15.0, 0.0, 1.0, 0.0);
-    glTranslatef(-1500.0f, 0.0f, 2500.0f);
-    glScalef(300,300,100);
-    glCallList(WALL);
-  glPopMatrix();
-
-  glPushMatrix();
-    glRotatef(25.0, 0.0, 1.0, 0.0);
-    glTranslatef(0.0f, 0.0f, 2500.0f);
-    glScalef(300,300,100);
-    glCallList(WALL);
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(-2410.0f, 0.0f, -800.0f);
-    glRotatef(90.0, 0.0, 1.0, 0.0);
-    glScalef(150,100,200);
-    glCallList(SHED);
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(1000.0f, 0.0f,1500.0f);
-    glRotatef(80.0, 0.0, 1.0, 0.0);
-    glScalef(150,125,150);
-    glCallList(BASE);
-  glPopMatrix();
-
-  glutSwapBuffers();
-} 
-
-
-void initialize (void){
-
-    glShadeModel( GL_SMOOTH );
-    glClearColor( 0.0f, 0.0f, 0.0f, 0.5f );
-    glClearDepth( 1.0f );
-    glEnable( GL_DEPTH_TEST );
-    glDepthFunc( GL_LEQUAL );
-    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-
-    // GLfloat fogColor[] = {0.5f,0.5f,0.5f,1.0f};
-    GLfloat amb_light[] = { 0.2f, 0.2f, 0.2f, 1.0 };
-    GLfloat diffuse0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-    GLfloat lightPos0[] = {1000.0f, 1000.0f, 1000.0f, 1.0 };
-    GLfloat specular[] = { 0.7, 0.7, 0.3, 1 };
-    glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse0 );
-    glLightfv( GL_LIGHT0, GL_POSITION, lightPos0);
-    glLightfv( GL_LIGHT0, GL_SPECULAR, specular );
-    glEnable( GL_LIGHT0 );
-    glEnable( GL_COLOR_MATERIAL );
-    glShadeModel( GL_SMOOTH );
-    glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE );
-    glDepthFunc( GL_LEQUAL );
-    glEnable( GL_DEPTH_TEST );
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0); 
-    // glEnable(GL_FOG);
-    // glFogi(GL_FOG_MODE,GL_LINEAR);
-    // glFogf(GL_FOG_START,10.0);
-    // glFogf(GL_FOG_END,100.0);
-    // glFogfv(GL_FOG_COLOR, fogColor);
-    glEnable(GL_NORMALIZE);
-}
-
-void changeSize(int w, int h) {
-	// Prevent a divide by zero, when window is too short (you cant make a window of zero width).
-	if (h == 0)
-		h = 1;
-    GLfloat aspect = (GLfloat) w / h;
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glViewport(0, 0, w, h);
-    gluPerspective(45.0f, aspect, 0.1f, 10000.0f);
-    glMatrixMode(GL_PROJECTION);
-    glMatrixMode(GL_MODELVIEW);
-}
+int CAR;
+int SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
+int SHED,WALL,BASE,FLOOR;
+int WORLD2;
 
 int main(int argc, char **argv) {
 
-	char filename[100];
-
 	angle = 0.0f;						      // angle of rotation for the camera direction
-	lx = 0.0f; lz = 0.0f;				// actual vector representing the camera's direction
+	lx = 0.0f; lz = 0.0f;				  // actual vector representing the camera's direction
   rx = 0.0f; rz= -1.0f;
 	x = 0.0f; z = 0.0f;				    // xz position of the car
   X = 0.0f; Z = 0.0f;           // XZ position of the camera
   rotateCar = 180.0f; rotateCamera=0.0f;
 	deltaRotate = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
+
+  worldNum = 2;
 
 	// init GLUT and create window
 	glutInit(&argc, argv);
@@ -235,37 +42,11 @@ int main(int argc, char **argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
-	initialize();
-  // if( !init() ){
-  //   printf( "Failed to initialize!\n" );
-  // }
-  // else{
-  //   if( !loadMedia() ){
-  //     printf( "Failed to load media!\n" );
-  //   }
-  //   else{ 
-  //     Mix_PlayMusic( gMusic, -1 );
-  //   }
-  // }
 
-	strcpy(filename , "../data/world1/base.obj");
-  BASE = base.load(filename);
-  strcpy(filename , "../data/world1/shed.obj");
-  SHED = shed.load(filename);
-  strcpy(filename , "../data/world1/wall.obj");
-  WALL = wall.load(filename);
-  strcpy(filename , "../data/characters/car.obj");
-  CAR = car.load(filename);
-  strcpy(filename , "../data/world1/floor.obj");
-  FLOOR = flooor.load(filename);
-  strcpy(filename , "../data/world1/sideleft.obj");
-  SIDELEFT = sideleft.load(filename);
-  strcpy(filename , "../data/world1/sideright.obj");
-  SIDERIGHT = sideright.load(filename);
-  strcpy(filename , "../data/world1/sideback.obj");
-  SIDEBACK = sideback.load(filename);
-  strcpy(filename , "../data/world1/sidefront.obj");
-  SIDEFRONT = sidefront.load(filename);
+	initialize();
+
+  initializeSound();
+  initializeWorld();
 
 	glutIgnoreKeyRepeat(1);
 	glutKeyboardFunc(processNormalKeys);

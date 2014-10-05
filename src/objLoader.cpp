@@ -1,6 +1,4 @@
-#include "objLoader.h"
 #include "global.h"
-#include "main.h"
 
 coordinate::coordinate(float a,float b,float c){
         x=a;

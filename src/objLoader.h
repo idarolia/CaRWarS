@@ -1,6 +1,3 @@
-#include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include <cstdlib>
 #include <vector>
 #include <string>
@@ -8,6 +5,7 @@
 #include <fstream>
 #include <cstdio>
 #include <iostream>
+
 #ifndef OBJLOADER_H
 #define OBJLOADER_H
  

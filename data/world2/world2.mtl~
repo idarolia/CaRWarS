@@ -1,0 +1,42 @@
+# Blender MTL File: 'world2.blend'
+# Material Count: 4
+
+newmtl base
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.080678 0.000000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world2/pics/floor5.bmp
+
+newmtl piller
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.261100 0.142723
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world2/pics/floor3.bmp
+
+newmtl platform
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.003916 0.026274
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world2/pics/floor10.bmp
+
+newmtl sides
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.010728 0.010728 0.010728
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world2/pics/wall1.bmp
