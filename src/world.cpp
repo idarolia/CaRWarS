@@ -3,8 +3,13 @@
 char filename[100];
 
 void initializeWorld(){
+
 	strcpy(filename , "../data/characters/car.obj");
     CAR = car.load(filename);
+    strcpy(filename , "../data/characters/carNew.obj");
+    CARNEW = carNew.load(filename);
+    strcpy(filename , "../data/characters/tractor.obj");
+    TRACTOR = tractor.load(filename);
 
 	if(worldNum == 1){
 		strcpy(filename , "../data/world1/base.obj");
@@ -41,11 +46,25 @@ void initializeWorld(){
 
 void drawWorld(){
 	if(worldNum == 1){
-		glPushMatrix();								// CAR
+		glPushMatrix();								// CHARACTERS
 			glTranslatef(x,0.0f,z-250.0f);
 			glRotatef(rotateCar, 0.0, 1.0, 0.0);
-			glScalef(100,75,100);
+			glScalef(200,175,200);
 			glCallList(CAR);
+		glPopMatrix();
+
+		glPushMatrix();								// CHARACTERS
+			glTranslatef(-1500.0f,20.0f,-2000.0f);
+			glRotatef(210.0, 0.0, 1.0, 0.0);
+			glScalef(50,50,50);
+			glCallList(CARNEW);
+		glPopMatrix();
+
+		glPushMatrix();								// CHARACTERS
+			glTranslatef(200.0f,185.0f,0.0f);
+			glRotatef(210.0, 0.0, 1.0, 0.0);
+			glScalef(50,50,50);
+			glCallList(TRACTOR);
 		glPopMatrix();
 
 		glPushMatrix();								// FLOOR
@@ -109,15 +128,29 @@ void drawWorld(){
 		glPopMatrix();
 	}
 	else if(worldNum == 2){
-		glPushMatrix();								// CAR
+		glPushMatrix();								// CHARACTERS
 			glTranslatef(x,0.0f,z-250.0f);
 			glRotatef(rotateCar, 0.0, 1.0, 0.0);
-			glScalef(100,75,100);
+			glScalef(200,175,200);
 			glCallList(CAR);
 		glPopMatrix();
 
+		glPushMatrix();								// CHARACTERS
+			glTranslatef(-3500.0f,20.0f,-2500.0f);
+			glRotatef(210.0, 0.0, 1.0, 0.0);
+			glScalef(50,50,50);
+			glCallList(CARNEW);
+		glPopMatrix();
+
+		glPushMatrix();								// CHARACTERS
+			glTranslatef(3500.0f,60.0f,-2500.0f);
+			glRotatef(210.0, 0.0, 1.0, 0.0);
+			glScalef(50,50,50);
+			glCallList(TRACTOR);
+		glPopMatrix();
+
 		glPushMatrix();								// WHOLE WORLD
-			glTranslatef(0.0f, -100.0f, 0.0f);
+			glTranslatef(0.0f, -70.0f, 0.0f);
 			glScalef(1000,750,1000);
 			glCallList(WORLD2);
 		glPopMatrix();

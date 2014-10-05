@@ -8,12 +8,12 @@ float deltaRotate;
 float deltaMove;
 int worldNum;
 
-objloader car;
+objloader car, carNew, tractor;
 objloader sideleft,sideright,sideback,sidefront;
 objloader shed, base, wall, flooor;
 objloader world2;
 
-int CAR;
+int CAR, CARNEW, TRACTOR;
 int SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
 int SHED,WALL,BASE,FLOOR;
 int WORLD2;
@@ -25,11 +25,11 @@ int main(int argc, char **argv) {
   rx = 0.0f; rz= -1.0f;
 	x = 0.0f; z = 0.0f;				    // xz position of the car
   X = 0.0f; Z = 0.0f;           // XZ position of the camera
-  rotateCar = 180.0f; rotateCamera=0.0f;
+  rotateCar = 90.0f; rotateCamera=0.0f;
 	deltaRotate = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
 
-  worldNum = 2;
+  worldNum = 1;
 
 	// init GLUT and create window
 	glutInit(&argc, argv);
@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 
 	initialize();
 
-  initializeSound();
+  // initializeSound();
   initializeWorld();
 
 	glutIgnoreKeyRepeat(1);

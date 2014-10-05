@@ -35,12 +35,12 @@ extern float deltaRotate;
 // extern Model_OBJ obj;
 extern int worldNum;
 
-extern objloader car;
+extern objloader car, carNew, tractor;
 extern objloader sideleft,sideright,sideback,sidefront;
 extern objloader shed, base, wall, flooor;
 extern objloader world2;
 
-extern int CAR;
+extern int CAR, CARNEW, TRACTOR;
 extern int SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
 extern int SHED,WALL,BASE,FLOOR;
 extern int WORLD2;

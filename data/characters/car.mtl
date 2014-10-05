@@ -1,10 +1,62 @@
-# Blender MTL File: 'None'
-# Material Count: 1
+# Blender MTL File: 'mineCar.blend'
+# Material Count: 6
 
-newmtl None
-Ns 0
+newmtl backMirror
+Ns 96.078431
 Ka 0.000000 0.000000 0.000000
-Kd 0.8 0.8 0.8
-Ks 0.8 0.8 0.8
-d 1
+Kd 0.000000 0.465170 0.001079
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
 illum 2
+map_Kd ../data/world1/pics/floor1.bmp
+
+newmtl backWheel
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.002476 0.002476 0.002476
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world1/pics/floor3.bmp
+
+newmtl body
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.005947 0.202354 0.062408
+Ks 0.490806 0.453376 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world1/pics/wall3.bmp
+
+newmtl frontMirror
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.011426 0.171228 0.014955
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world1/pics/floor1.bmp
+
+newmtl frontWheel
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.007215 0.007215 0.007215
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world1/pics/floor3.bmp
+
+newmtl headlights
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.638346 0.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ../data/world1/pics/floor7.bmp

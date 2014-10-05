@@ -9,8 +9,8 @@ void computePos(float deltaMove) {
     rotateCar -= deltaRotate;
     rotateCamera += deltaRotate*pi/180;
   }
-  lx = deltaMove * sin(rotateCar*pi/180);
-  lz = -deltaMove * cos(rotateCar*pi/180);
+  lx = deltaMove * cos(-rotateCar*pi/180);
+  lz = -deltaMove * sin(-rotateCar*pi/180);
   x = x + lx;
   z = z - lz;
   rx = rx + lx;
@@ -25,7 +25,7 @@ void renderScene(void) {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
   glLoadIdentity();                                             // Reset transformations/*
-  gluLookAt(x , 100.0f, z,                                 //Change the camera position
+  gluLookAt(x , 100.0f, z+200,                                 //Change the camera position
             rx, 100.0f, rz,                                     //Change Lookat vector
             // rotateCamera, 50.0f,-1.0f,                       //Change Lookat vector
             0.0f, 100.0f, 0.0f );                               //Change Up vector*/
