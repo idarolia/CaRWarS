@@ -9,12 +9,10 @@ void computePos(float deltaMove) {
     rotateCar -= deltaRotate;
     rotateCamera += deltaRotate*pi/180;
   }
-  lx = deltaMove * cos(-rotateCar*pi/180);
-  lz = -deltaMove * sin(-rotateCar*pi/180);
-  x = x + lx;
-  z = z - lz;
-  rx = rx + lx;
-  rz = rz - lz;
+  x += deltaMove * sin(rotateCar*pi/180);
+  z += deltaMove * cos(rotateCar*pi/180);
+  rx += deltaMove * sin(rotateCar*pi/180);
+  rz += deltaMove * cos(rotateCar*pi/180);
 }
 
 void renderScene(void) {
@@ -25,10 +23,10 @@ void renderScene(void) {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
   glLoadIdentity();                                             // Reset transformations/*
-  gluLookAt(x , 100.0f, z+200,                                 //Change the camera position
-            rx, 100.0f, rz,                                     //Change Lookat vector
-            // rotateCamera, 50.0f,-1.0f,                       //Change Lookat vector
-            0.0f, 100.0f, 0.0f );                               //Change Up vector*/
+
+  gluLookAt(  x - (float)sin(rotateCar*pi/180)*250.0 , 100.0f,  z - (float)cos(rotateCar*pi/180)*250.0,    //Change the camera position
+              x + (float)sin(rotateCar*pi/180)*10.0 , 100.0f,  z + (float)cos(rotateCar*pi/180)*10.0,    //Change Lookat vector
+             0.0f, 100.0f, 0.0f );                               //Change Up vector*/
 
   drawWorld();
 

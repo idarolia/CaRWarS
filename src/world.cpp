@@ -47,7 +47,8 @@ void initializeWorld(){
 void drawWorld(){
 	if(worldNum == 1){
 		glPushMatrix();								// CHARACTERS
-			glTranslatef(x,0.0f,z-250.0f);
+			glTranslatef(x,0.0f,z);
+			glRotatef(-90, 0.0, 1.0, 0.0);
 			glRotatef(rotateCar, 0.0, 1.0, 0.0);
 			glScalef(200,175,200);
 			glCallList(CAR);
@@ -129,7 +130,8 @@ void drawWorld(){
 	}
 	else if(worldNum == 2){
 		glPushMatrix();								// CHARACTERS
-			glTranslatef(x,0.0f,z-250.0f);
+			glTranslatef(x,0.0f,z);
+			glRotatef(-90, 0.0, 1.0, 0.0);
 			glRotatef(rotateCar, 0.0, 1.0, 0.0);
 			glScalef(200,175,200);
 			glCallList(CAR);
