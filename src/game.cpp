@@ -1,5 +1,6 @@
 #include "global.h"
 
+// inGame = 1
 
 void computePos(float deltaMove) {
   if(deltaMove>0){
@@ -15,7 +16,7 @@ void computePos(float deltaMove) {
   rz += deltaMove * cos(rotateCar*pi/180);
 }
 
-void renderScene(void) {
+void renderGame(void) {
   int i,j;
   if (deltaMove){
     computePos(deltaMove);
@@ -29,8 +30,6 @@ void renderScene(void) {
              0.0f, 100.0f, 0.0f );                               //Change Up vector*/
 
   drawWorld();
-
-  glutSwapBuffers();
 } 
 
 
@@ -57,6 +56,10 @@ void initialize (void){
     glEnable( GL_DEPTH_TEST );
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
+    glEnable(GL_TEXTURE_2D);
+    arrow = loadTex("../data/images/arrow.bmp"); 
+    mainMenu = loadTex("../data/images/mainMenu.bmp");
+    pauseMenu = loadTex("../data/images/mainMenu.bmp");
 }
 
 void changeSize(int w, int h) {

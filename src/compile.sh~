@@ -1,1 +1,1 @@
-g++ main.cpp game.cpp objLoader.cpp  world.cpp keyboard.cpp sound.cpp -o main -lGL -lGLU -lglut -lm -lSDL -lSDL_mixer
+g++ main.cpp  game.cpp  objLoader.cpp  world.cpp  keyboard.cpp  sound.cpp menu.cpp ortho.cpp  -o run -lGL -lGLU -lglut -lm -lSDL -lSDL_mixer -lSDL_image

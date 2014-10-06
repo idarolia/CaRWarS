@@ -7,6 +7,8 @@ float rotateCar, rotateCamera;
 float deltaRotate;
 float deltaMove;
 int worldNum;
+bool inGame, pauseGame;
+int  menuNum, mainMenu, pauseMenu, arrow;
 
 objloader car, carNew, tractor;
 objloader sideleft,sideright,sideback,sidefront;
@@ -17,6 +19,16 @@ int CAR, CARNEW, TRACTOR;
 int SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
 int SHED,WALL,BASE,FLOOR;
 int WORLD2;
+
+void renderScene(void){
+  if(!inGame){
+    renderMenu();
+  }
+  else{
+    renderGame();
+  }
+  glutSwapBuffers();
+}
 
 int main(int argc, char **argv) {
 
@@ -29,7 +41,8 @@ int main(int argc, char **argv) {
 	deltaRotate = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
 
-  worldNum = 2;
+  worldNum = 1;
+  inGame = false; pauseGame = false; menuNum = 1;
 
 	// init GLUT and create window
 	glutInit(&argc, argv);
@@ -40,8 +53,8 @@ int main(int argc, char **argv) {
 
 	// register callbacks
 	glutDisplayFunc(renderScene);
-	glutReshapeFunc(changeSize);
 	glutIdleFunc(renderScene);
+  glutReshapeFunc(changeSize);
 
 	initialize();
 

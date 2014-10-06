@@ -12,6 +12,7 @@
 # include <SDL/SDL.h>
 # include "SDL/SDL.h"
 # include "SDL/SDL_mixer.h"
+# include "SDL/SDL_image.h"
 
 # include "main.h"
 # include "game.h"
@@ -19,6 +20,9 @@
 # include "keyboard.h"
 # include "world.h"
 # include "sound.h"
+# include "menu.h"
+# include "ortho.h"
+# include "hud.h"
 
 #define pi 3.14159265359
 
@@ -33,6 +37,9 @@ extern float deltaMove;
 extern float deltaRotate;
 
 // extern Model_OBJ obj;
+extern bool inGame, pauseGame;
+extern int menuNum;
+extern int mainMenu, arrow, pauseMenu;
 extern int worldNum;
 
 extern objloader car, carNew, tractor;
