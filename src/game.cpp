@@ -5,10 +5,8 @@
 void computePos(float deltaMove) {
   if(deltaMove>0){
     rotateCar += deltaRotate;
-    rotateCamera -= deltaRotate*pi/180;
   }else{
     rotateCar -= deltaRotate;
-    rotateCamera += deltaRotate*pi/180;
   }
   x += deltaMove * sin(rotateCar*pi/180);
   z += deltaMove * cos(rotateCar*pi/180);
@@ -44,16 +42,16 @@ void initialize (void){
     GLfloat diffuse0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
     GLfloat lightPos0[] = {1000.0f, 1000.0f, 1000.0f, 1.0 };
     GLfloat specular[] = { 0.7, 0.7, 0.3, 1 };
-    glLightModelfv( GL_LIGHT_MODEL_AMBIENT, amb_light );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, diffuse0 );
-    glLightfv( GL_LIGHT0, GL_POSITION, lightPos0);
-    glLightfv( GL_LIGHT0, GL_SPECULAR, specular );
-    glEnable( GL_LIGHT0 );
-    glEnable( GL_COLOR_MATERIAL );
-    glShadeModel( GL_SMOOTH );
-    glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE );
-    glDepthFunc( GL_LEQUAL );
-    glEnable( GL_DEPTH_TEST );
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb_light);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+    glShadeModel(GL_SMOOTH);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     glEnable(GL_TEXTURE_2D);

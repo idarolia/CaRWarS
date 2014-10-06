@@ -3,7 +3,7 @@
 float angle;			
 float lx,lz, rx, rz;			
 float x, z, X, Z;				
-float rotateCar, rotateCamera;
+float rotateCar;
 float deltaRotate;
 float deltaMove;
 int worldNum;
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
   rx = 0.0f; rz= -1.0f;
 	x = 0.0f; z = 0.0f;				    // xz position of the car
   X = 0.0f; Z = 0.0f;           // XZ position of the camera
-  rotateCar = 180.0f; rotateCamera=0.0f;
+  rotateCar = 180.0f;
 	deltaRotate = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
 

@@ -30,7 +30,6 @@ extern float angle;				// angle of rotation for the camera direction
 extern float lx,lz,rx,rz;				// actual vector representing the camera's direction
 extern float x, z, X, Z;		// XZ position of the car and camera
 extern float rotateCar;
-extern float rotateCamera;
 
 // the key states. These variables will be zero when no key is being presses
 extern float deltaMove;
