@@ -1,0 +1,35 @@
+#include "global.h"
+#include <SDL/SDL_image.h>
+
+void renderMenu(void)
+{
+	orthoSetup();
+	glBegin(GL_QUADS);
+	glVertex2i(0,   0   );
+	glVertex2i(0,   yres);
+	glVertex2i(xres,yres);
+	glVertex2i(xres,0   );
+	glEnd();
+	orthoreset();
+	
+}
+
+
+
+int loadTex(std::string fileName)
+{
+    SDL_Surface* image = SDL_LoadBMP(fileName.c_str());
+    //SDL_Surface *image = IMG_Load(fileName.c_str());
+    //SDL_DisplayFormatAlpha(image);
+    unsigned int object;
+    glGenTextures(1, &object);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, object);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    //glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    //glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,image->w,image->h,0, GL_RGB, GL_UNSIGNE
+    SDL_FreeSurface(image);
+    return object;
+}

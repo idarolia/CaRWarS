@@ -1,7 +1,5 @@
 #include "global.h"
 
-// inGame = 1
-
 void computePos(float deltaMove) {
   if(deltaMove>0){
     rotateCar += deltaRotate;
@@ -55,9 +53,22 @@ void initialize (void){
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     glEnable(GL_TEXTURE_2D);
-    arrow = loadTex("../data/images/arrow.bmp"); 
+    arrow = loadTex("../data/images/arrow.bmp");
+    downArrow = loadTex("../data/images/downArrow.bmp");
     mainMenu = loadTex("../data/images/mainMenu.bmp");
-    pauseMenu = loadTex("../data/images/mainMenu.bmp");
+    pauseMenu = loadTex("../data/images/pauseMenu.bmp");
+    world1Snap = loadTex("../data/images/world1Snap.bmp");
+    world2Snap = loadTex("../data/images/world2Snap.bmp");
+    powerUp = loadTex("../data/images/powerUp.bmp");
+    healthBar = loadTex("../data/images/healthBar.bmp");
+    soundOff = loadTex("../data/images/soundOff.bmp");
+    soundOn = loadTex("../data/images/soundOn.bmp");
+    title = loadTex("../data/images/title.bmp");
+    powerFire = loadTex("../data/images/powerFire.bmp");
+    powerAir = loadTex("../data/images/powerAir.bmp");
+    one = loadTex("../data/images/one.bmp");
+    two = loadTex("../data/images/two.bmp");
+    four = loadTex("../data/images/four.bmp");
 }
 
 void changeSize(int w, int h) {

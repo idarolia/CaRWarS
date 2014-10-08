@@ -39,4 +39,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/floor13.bmp
+map_Kd ../data/world1/pics/floor13.bmp

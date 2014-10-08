@@ -9,7 +9,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd ../data/world1/pics/floor10.bmp
+map_Kd ../data/characters/pics/floor10.bmp
 
 newmtl Tyres
 Ns 96.078431
@@ -19,7 +19,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd ../data/world1/pics/floor3.bmp
+map_Kd ../data/characters/pics/floor3.bmp
 
 newmtl body
 Ns 96.078431
@@ -29,7 +29,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd ../data/world1/pics/wall3.bmp
+map_Kd ../data/characters/pics/wall3.bmp
 
 newmtl restbody
 Ns 96.078431
@@ -39,4 +39,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd ../data/world1/pics/floor13.bmp
+map_Kd ../data/characters/pics/floor13.bmp

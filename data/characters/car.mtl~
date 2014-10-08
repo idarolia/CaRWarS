@@ -9,7 +9,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/floor1.bmp
+map_Kd ../data/characters/pics/floor1.bmp
 
 newmtl backWheel
 Ns 96.078431
@@ -19,7 +19,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/floor3.bmp
+map_Kd ../data/characters/pics/floor3.bmp
 
 newmtl body
 Ns 96.078431
@@ -29,7 +29,7 @@ Ks 0.490806 0.453376 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/wall3.bmp
+map_Kd ../data/characters/pics/wall3.bmp
 
 newmtl frontMirror
 Ns 96.078431
@@ -39,7 +39,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/floor1.bmp
+map_Kd ../data/characters/pics/floor1.bmp
 
 newmtl frontWheel
 Ns 96.078431
@@ -49,7 +49,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/floor3.bmp
+map_Kd ../data/world1/pics/floor3.bmp
 
 newmtl headlights
 Ns 96.078431
@@ -59,4 +59,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd /home/ishan/project_CS360/CaRWarS/data/world1/pics/floor7.bmp
+map_Kd ../data/world1/pics/floor7.bmp

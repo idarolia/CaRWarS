@@ -185,4 +185,5 @@ void drawWorld(){
 		glPopMatrix();
 		// glEnable(GL_LIGHTING);
 	}
+	renderHUD();
 }

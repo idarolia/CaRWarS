@@ -7,8 +7,10 @@ float rotateCar;
 float deltaRotate;
 float deltaMove;
 int worldNum;
-bool inGame, pauseGame;
-int  menuNum, mainMenu, pauseMenu, arrow;
+bool pauseGame;
+int inGame = 0;
+int one, two, four;
+int menuNum, mainMenu, pauseMenu, arrow, settingsMenu, world1Snap, world2Snap, powerUp, healthBar, soundOn, soundOff, title, downArrow, powerFire, powerAir;
 
 objloader car, carNew, tractor;
 objloader sideleft,sideright,sideback,sidefront;
@@ -19,12 +21,17 @@ int CAR, CARNEW, TRACTOR;
 int SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
 int SHED,WALL,BASE,FLOOR;
 int WORLD2;
+int flag = 0;
 
 void renderScene(void){
-  if(!inGame){
+  if(inGame < 4){
     renderMenu();
   }
   else{
+  	if(flag==0){
+	 	initializeWorld();
+	 	flag = 1;
+	 }
     renderGame();
   }
   glutSwapBuffers();
@@ -41,8 +48,8 @@ int main(int argc, char **argv) {
 	deltaRotate = 0.0f;					  // the key states. These variables will be zero when no key is being presses
 	deltaMove = 0;
 
-  worldNum = 1;
-  inGame = false; pauseGame = false; menuNum = 1;
+  
+  inGame = 0; menuNum = 1;
 
 	// init GLUT and create window
 	glutInit(&argc, argv);
@@ -54,12 +61,11 @@ int main(int argc, char **argv) {
 	// register callbacks
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
-  glutReshapeFunc(changeSize);
+    glutReshapeFunc(changeSize);
 
 	initialize();
 
-  // initializeSound();
-  initializeWorld();
+	initializeSound();
 
 	glutIgnoreKeyRepeat(1);
 	glutKeyboardFunc(processNormalKeys);

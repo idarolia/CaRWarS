@@ -1,5 +1,5 @@
 OpenGl_Game
 ===========
 To run the code:
-Compile in  src folder -  g++ main.cpp keyboard.cpp objLoader.cpp -o main -lGL -lGLU -lglut -lm
+Compile in  src folder - g++ main.cpp keyboard.cpp objLoader.cpp -o main -lGL -lGLU -lglut -lm -lSDL -lSDL_mixer
  ./main

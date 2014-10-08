@@ -36,10 +36,11 @@ extern float deltaMove;
 extern float deltaRotate;
 
 // extern Model_OBJ obj;
-extern bool inGame, pauseGame;
+extern bool pauseGame;
 extern int menuNum;
-extern int mainMenu, arrow, pauseMenu;
-extern int worldNum;
+extern int one, two, four;
+extern int mainMenu, arrow, pauseMenu, settingsMenu, world1Snap, world2Snap, powerUp, healthBar, soundOn, soundOff, title, downArrow, powerFire, powerAir;
+extern int worldNum, inGame;
 
 extern objloader car, carNew, tractor;
 extern objloader sideleft,sideright,sideback,sidefront;

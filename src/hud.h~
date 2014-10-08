@@ -1,0 +1,8 @@
+#ifndef _HUD_H_
+#define _HUD_H_
+
+#include "global.h"
+
+void orthoSet(void);
+void orthoReset(void);
+void renderHUD(void);
