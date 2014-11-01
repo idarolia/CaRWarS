@@ -20,11 +20,19 @@ void renderGame(void) {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
   glLoadIdentity();                                             // Reset transformations/*
+  
+  lookX = x + (float)sin(rotateCar*pi/180)*10.0;
+  lookY = 100.0f;
+  lookZ = z + (float)cos(rotateCar*pi/180)*10.0;
 
-  gluLookAt(  x - (float)sin(rotateCar*pi/180)*250.0 , 100.0f,  z - (float)cos(rotateCar*pi/180)*250.0,    //Change the camera position
-              x + (float)sin(rotateCar*pi/180)*10.0 , 100.0f,  z + (float)cos(rotateCar*pi/180)*10.0,    //Change Lookat vector
-             0.0f, 100.0f, 0.0f );                               //Change Up vector*/
+  camPosX = x - (float)sin(rotateCar*pi/180)*250.0;
+  camPosY = 100.0f; 
+  camPosZ = z - (float)cos(rotateCar*pi/180)*250.0;
 
+  gluLookAt(camPosX , camPosY, camPosZ,     //Change the camera position
+            lookX , lookY , lookZ,          //Change Lookat vector
+            0.0f, 100.0f, 0.0f );           //Change Up vector
+  world->stepSimulation(1/60.0);
   drawWorld();
 } 
 
@@ -69,6 +77,16 @@ void initialize (void){
     one = loadTex("../data/images/one.bmp");
     two = loadTex("../data/images/two.bmp");
     four = loadTex("../data/images/four.bmp");
+}
+
+void initializeGame(void){
+    quad=gluNewQuadric();
+    collisionConfig = new btDefaultCollisionConfiguration();
+    dispatcher = new btCollisionDispatcher(collisionConfig);
+    broadphase = new btDbvtBroadphase();
+    solver = new btSequentialImpulseConstraintSolver();
+    world = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfig);
+    world->setGravity(btVector3(0,-100,0));
 }
 
 void changeSize(int w, int h) {

@@ -58,7 +58,6 @@ void renderHUD()
       glTexCoord2f(1,1);  glVertex2f(755,340);
       glTexCoord2f(0,1);  glVertex2f(745,340);
     glEnd();
-
   orthoReset();
 }
 

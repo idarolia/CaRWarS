@@ -11,6 +11,7 @@ void processNormalKeys(unsigned char key, int xx, int yy) {
       inGame = 1;
   }
   if (key == 27 && inGame == 3){
+    printf("escape");
     if(!pauseGame)
       inGame = 0;
     else 
@@ -18,6 +19,13 @@ void processNormalKeys(unsigned char key, int xx, int yy) {
   }
   if (key == 13 && inGame < 4){
     mainMenuCall();
+  }
+
+  if (key == 122){ 
+    addLandmine();
+  }
+  if (key == 32){ 
+    addBullet();
   }
 } 
 

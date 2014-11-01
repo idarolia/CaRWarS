@@ -18,6 +18,7 @@ void orthoSet(void)
 {
   glLoadIdentity();
   glDisable(GL_DEPTH_TEST);
+  glDisable(GL_LIGHTING);
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
     glLoadIdentity();
@@ -33,5 +34,6 @@ void orthoReset(void)
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
+  glEnable(GL_LIGHTING);
   glEnable(GL_DEPTH_TEST);
 }

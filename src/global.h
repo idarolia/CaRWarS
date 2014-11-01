@@ -13,6 +13,9 @@
 # include "SDL/SDL.h"
 # include "SDL/SDL_mixer.h"
 # include "SDL/SDL_image.h"
+# include <bullet/btBulletDynamicsCommon.h>
+# include <vector>
+
 
 # include "main.h"
 # include "game.h"
@@ -23,8 +26,13 @@
 # include "menu.h"
 # include "ortho.h"
 # include "hud.h"
+// # include "weapons.h"
 
 #define pi 3.14159265359
+
+extern float camPosX, lookX;
+extern float camPosY, lookY;
+extern float camPosZ, lookZ;
 
 extern float angle;				// angle of rotation for the camera direction
 extern float lx,lz,rx,rz;				// actual vector representing the camera's direction
@@ -38,18 +46,35 @@ extern float deltaRotate;
 // extern Model_OBJ obj;
 extern bool pauseGame;
 extern int menuNum;
-extern int one, two, four;
+extern int one, two, three, four, five, zero;
 extern int mainMenu, arrow, pauseMenu, settingsMenu, world1Snap, world2Snap, powerUp, healthBar, soundOn, soundOff, title, downArrow, powerFire, powerAir;
 extern int worldNum, inGame;
+extern int powerToggle, landMineActivate, landX, landY, landZ;
 
 extern objloader car, carNew, tractor;
 extern objloader sideleft,sideright,sideback,sidefront;
 extern objloader shed, base, wall, flooor;
 extern objloader world2;
+extern objloader bullet, landmine;
 
 extern int CAR, CARNEW, TRACTOR;
 extern int SIDELEFT,SIDERIGHT,SIDEBACK,SIDEFRONT;
 extern int SHED,WALL,BASE,FLOOR;
 extern int WORLD2;
+extern int BULLET, LANDMINE;
+
+extern int bulletCount,landmineCount;
+
+extern GLUquadricObj* quad;
+
+extern btDynamicsWorld* world;
+
+extern btDispatcher* dispatcher;
+extern btCollisionConfiguration* collisionConfig;
+extern btBroadphaseInterface* broadphase;
+extern btConstraintSolver* solver;
+
+extern btRigidBody *btCar, *btCarNew, *btTractor, *btSideleft,*btSideright,*btSideback,*btSidefront, *btShed, *btBase, *btWall, *btFloor, *btWorld2;
+extern std::vector<btRigidBody*> btLandmine, btBullet;
 
 #endif
