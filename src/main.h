@@ -1,11 +1,5 @@
-#ifndef _MAIN_H_
-#define _MAIN_H_
-
 #include "global.h"
 
-int main(int argc,char **argv);
-void changeSize(int w, int h);
+int main(int ,char**);
 void initialize (void);
-bool init(void);
-
-#endif
+bool callbackFunc(btManifoldPoint& ,const btCollisionObject* ,int ,int ,const btCollisionObject* ,int ,int);

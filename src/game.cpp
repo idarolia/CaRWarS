@@ -1,39 +1,68 @@
 #include "global.h"
 
-void computePos(float deltaMove) {
-  if(deltaMove>0){
-    rotateCar += deltaRotate;
-  }else{
-    rotateCar -= deltaRotate;
-  }
-  x += deltaMove * sin(rotateCar*pi/180);
-  z += deltaMove * cos(rotateCar*pi/180);
-  rx += deltaMove * sin(rotateCar*pi/180);
-  rz += deltaMove * cos(rotateCar*pi/180);
+void computePos(float deltaMove, int n) {
+    if(n==1){
+        if(deltaMove1>0){
+            rotateCar1 += deltaRotate1;
+        }else{
+            rotateCar1 -= deltaRotate1;
+        }
+        x1 += deltaMove1 * sin(rotateCar1*pi/180);
+        z1 += deltaMove1 * cos(rotateCar1*pi/180);
+    }
+    else if(n==2){
+        if(deltaMove2>0){
+            rotateCar2 += deltaRotate2;
+        }else{
+            rotateCar2 -= deltaRotate2;
+        }
+        x2 += deltaMove2 * sin(rotateCar2*pi/180);
+        z2 += deltaMove2 * cos(rotateCar2*pi/180);
+    }
 }
 
 void renderGame(void) {
-  int i,j;
-  if (deltaMove){
-    computePos(deltaMove);
-  }
+    int i,j;
+    if(deltaMove1){
+        computePos(deltaMove1,1);
+    }
+    if(deltaMove2){
+        computePos(deltaMove2,2);
+    }
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);           // Clear Color and Depth Buffers
-  glLoadIdentity();                                             // Reset transformations/*
+    glLoadIdentity();                                             // Reset transformations/*
   
-  lookX = x + (float)sin(rotateCar*pi/180)*10.0;
-  lookY = 100.0f;
-  lookZ = z + (float)cos(rotateCar*pi/180)*10.0;
+    if(viewport1==1 && viewport2==0)
+    {
+        lookX1 = x1 + (float)sin(rotateCar1*pi/180)*10.0;
+        lookY1 = 100.0f;
+        lookZ1 = z1 + (float)cos(rotateCar1*pi/180)*10.0;
 
-  camPosX = x - (float)sin(rotateCar*pi/180)*250.0;
-  camPosY = 100.0f; 
-  camPosZ = z - (float)cos(rotateCar*pi/180)*250.0;
+        camPosX1 = x1 - (float)sin(rotateCar1*pi/180)*250.0;
+        camPosY1 = 100.0f; 
+        camPosZ1 = z1 - (float)cos(rotateCar1*pi/180)*250.0;
 
-  gluLookAt(camPosX , camPosY, camPosZ,     //Change the camera position
-            lookX , lookY , lookZ,          //Change Lookat vector
-            0.0f, 100.0f, 0.0f );           //Change Up vector
-  world->stepSimulation(1/60.0);
-  drawWorld();
+        gluLookAt(camPosX1 , camPosY1, camPosZ1,     //Change the camera position
+                  lookX1 , lookY1 , lookZ1,          //Change Lookat vector
+                  0.0f, 100.0f, 0.0f );           //Change Up vector
+    }
+    else if(viewport1==0 && viewport2==1)
+    {
+        lookX2 = x2 + (float)sin(rotateCar2*pi/180)*10.0;
+        lookY2 = 100.0f;
+        lookZ2 = z2 + (float)cos(rotateCar2*pi/180)*10.0;
+
+        camPosX2 = x2 - (float)sin(rotateCar2*pi/180)*250.0;
+        camPosY2 = 100.0f; 
+        camPosZ2 = z2 - (float)cos(rotateCar2*pi/180)*250.0;
+
+        gluLookAt(camPosX2 , camPosY2, camPosZ2,     //Change the camera position
+                  lookX2 , lookY2 , lookZ2,          //Change Lookat vector
+                  0.0f, 100.0f, 0.0f );           //Change Up vector
+
+    }
+    world->stepSimulation(1/60.0);
+    drawWorld();
 } 
 
 
@@ -61,22 +90,6 @@ void initialize (void){
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
     glEnable(GL_TEXTURE_2D);
-    arrow = loadTex("../data/images/arrow.bmp");
-    downArrow = loadTex("../data/images/downArrow.bmp");
-    mainMenu = loadTex("../data/images/mainMenu.bmp");
-    pauseMenu = loadTex("../data/images/pauseMenu.bmp");
-    world1Snap = loadTex("../data/images/world1Snap.bmp");
-    world2Snap = loadTex("../data/images/world2Snap.bmp");
-    powerUp = loadTex("../data/images/powerUp.bmp");
-    healthBar = loadTex("../data/images/healthBar.bmp");
-    soundOff = loadTex("../data/images/soundOff.bmp");
-    soundOn = loadTex("../data/images/soundOn.bmp");
-    title = loadTex("../data/images/title.bmp");
-    powerFire = loadTex("../data/images/powerFire.bmp");
-    powerAir = loadTex("../data/images/powerAir.bmp");
-    one = loadTex("../data/images/one.bmp");
-    two = loadTex("../data/images/two.bmp");
-    four = loadTex("../data/images/four.bmp");
 }
 
 void initializeGame(void){
@@ -87,18 +100,38 @@ void initializeGame(void){
     solver = new btSequentialImpulseConstraintSolver();
     world = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfig);
     world->setGravity(btVector3(0,-100,0));
+
+    arrow = loadTex("../data/images/arrow.bmp");
+    downArrow = loadTex("../data/images/downArrow.bmp");
+    mainMenu = loadTex("../data/images/mainMenu.bmp");
+    pauseMenu = loadTex("../data/images/pauseMenu.bmp");
+    world1Snap = loadTex("../data/images/world1Snap.bmp");
+    world2Snap = loadTex("../data/images/world2Snap.bmp");
+    healthBar = loadTex("../data/images/healthBar.bmp");
+    soundOff = loadTex("../data/images/soundOff.bmp");
+    soundOn = loadTex("../data/images/soundOn.bmp");
+    title = loadTex("../data/images/title.bmp");
+    powerFire = loadTex("../data/images/powerFire.bmp");
+    powerAir = loadTex("../data/images/powerAir.bmp");
+    powerUp = loadTex("../data/images/landmine.bmp");
+    one = loadTex("../data/images/one.bmp");
+    two = loadTex("../data/images/two.bmp");
+    three = loadTex("../data/images/three.bmp");
+    four = loadTex("../data/images/four.bmp");
+    five = loadTex("../data/images/five.bmp");
 }
 
 void changeSize(int w, int h) {
 	// Prevent a divide by zero, when window is too short (you cant make a window of zero width).
-	if (h == 0)
-		h = 1;
+    if (h == 0)
+        h = 1;
     GLfloat aspect = (GLfloat) w / h;
+
+    width = w;
+    height = h;
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glViewport(0, 0, w, h);
     gluPerspective(45.0f, aspect, 0.1f, 10000.0f);
-    glMatrixMode(GL_PROJECTION);
     glMatrixMode(GL_MODELVIEW);
 }

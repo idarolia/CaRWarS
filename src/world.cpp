@@ -2,14 +2,7 @@
 
 char filename[100];
 
-struct userStats{
-	int health;
-	int landmineCount;
-	int missileCount;
-};
-userStats user1 = {100,5,5};
-
-void addBox(float width,float height,float depth,float x,float y,float z,float mass, btRigidBody** BODY)
+void addBox(char* NAME,float width,float height,float depth,float x,float y,float z,float mass, object** BODY)
 {
         btTransform t;
         t.setIdentity();
@@ -23,66 +16,39 @@ void addBox(float width,float height,float depth,float x,float y,float z,float m
         btRigidBody::btRigidBodyConstructionInfo info(mass,motion,box,inertia);
         btRigidBody* body=new btRigidBody(info);
         world->addRigidBody(body);
-        *BODY = body;
+        *BODY = new object(body,false,NAME,0,0);
+        body->setUserPointer(*BODY);
 }
 
-void renderBox(btRigidBody* box, float x, float y, float z, float rx, float ry, float rz, float sx, float sy, float sz, int OBJECT)
+void renderBox(object* box, float x, float y, float z, float rx, float ry, float rz, float sx, float sy, float sz, int OBJECT)
 {
-        if(box->getCollisionShape()->getShapeType()!=BOX_SHAPE_PROXYTYPE)
+        if(box->body->getCollisionShape()->getShapeType()!=BOX_SHAPE_PROXYTYPE)
                 return;
-        btVector3 extent=((btBoxShape*)box->getCollisionShape())->getHalfExtentsWithoutMargin();
+        btVector3 extent=((btBoxShape*)box->body->getCollisionShape())->getHalfExtentsWithoutMargin();
         btTransform t;
-        box->getMotionState()->getWorldTransform(t);
+        box->body->getMotionState()->getWorldTransform(t);
         float mat[16];
-    	// t.setOrigin(btVector3(x,y,z));
+        
+        if(OBJECT == CAR || OBJECT == CARNEW || OBJECT == TRACTOR)
+        	t.setOrigin(btVector3(x,y,z));
+        
         t.getOpenGLMatrix(mat);
-
         glPushMatrix();
-                glMultMatrixf(mat);     //translation,rotation
-                // glTranslatef(x,y,z);
-				// glRotatef(rx, ry, rz, 0.0);
+            glMultMatrixf(mat);     //translation,rotation
+			glPushMatrix();
+				if(OBJECT==CARNEW | OBJECT==CAR){
+					glRotatef(rx,ry,rz,0.0);
+				}
+				if(OBJECT==TRACTOR)
+					glTranslatef(30,0,-5);
+
 				glScalef(sx,sy,sz);
-                glCallList(OBJECT);
-                // glBegin(GL_QUADS);
-                //         glVertex3f(-extent.x(),extent.y(),-extent.z());
-                //         glVertex3f(-extent.x(),-extent.y(),-extent.z());
-                //         glVertex3f(-extent.x(),-extent.y(),extent.z());
-                //         glVertex3f(-extent.x(),extent.y(),extent.z());         
-                // glEnd();
-                // glBegin(GL_QUADS);
-                //         glVertex3f(extent.x(),extent.y(),-extent.z());
-                //         glVertex3f(extent.x(),-extent.y(),-extent.z());
-                //         glVertex3f(extent.x(),-extent.y(),extent.z());
-                //         glVertex3f(extent.x(),extent.y(),extent.z());          
-                // glEnd();
-                // glBegin(GL_QUADS);
-                //         glVertex3f(-extent.x(),extent.y(),extent.z());
-                //         glVertex3f(-extent.x(),-extent.y(),extent.z());
-                //         glVertex3f(extent.x(),-extent.y(),extent.z());
-                //         glVertex3f(extent.x(),extent.y(),extent.z());          
-                // glEnd();
-                // glBegin(GL_QUADS);
-                //         glVertex3f(-extent.x(),extent.y(),-extent.z());
-                //         glVertex3f(-extent.x(),-extent.y(),-extent.z());
-                //         glVertex3f(extent.x(),-extent.y(),-extent.z());
-                //         glVertex3f(extent.x(),extent.y(),-extent.z());         
-                // glEnd();
-                // glBegin(GL_QUADS);
-                //         glVertex3f(-extent.x(),extent.y(),-extent.z());
-                //         glVertex3f(-extent.x(),extent.y(),extent.z());
-                //         glVertex3f(extent.x(),extent.y(),extent.z());
-                //         glVertex3f(extent.x(),extent.y(),-extent.z());         
-                // glEnd();
-                // glBegin(GL_QUADS);
-                //         glVertex3f(-extent.x(),-extent.y(),-extent.z());
-                //         glVertex3f(-extent.x(),-extent.y(),extent.z());
-                //         glVertex3f(extent.x(),-extent.y(),extent.z());
-                //         glVertex3f(extent.x(),-extent.y(),-extent.z());        
-                // glEnd();               
+            	glCallList(OBJECT);
+        	glPopMatrix();      
         glPopMatrix();
 }
 
-void addSphere(float rad,float x,float y,float z,float mass)
+void addSphere(char* NAME,float rad,float x,float y,float z,float mass)
 {
         btTransform t;
         t.setIdentity();
@@ -96,16 +62,17 @@ void addSphere(float rad,float x,float y,float z,float mass)
         btRigidBody::btRigidBodyConstructionInfo info(mass,motion,sphere,inertia);
         btRigidBody* body=new btRigidBody(info);
         world->addRigidBody(body);
-        btBullet.push_back(body);
+        btBullet.push_back(new object(body,false,NAME,1,btBullet.size()));
+        body->setUserPointer(btBullet[btBullet.size()-1]);
 }
  
-void renderSphere(btRigidBody* sphere)
+void renderSphere(object* sphere)
 {
-        if(sphere->getCollisionShape()->getShapeType()!=SPHERE_SHAPE_PROXYTYPE)
+        if(sphere->body->getCollisionShape()->getShapeType()!=SPHERE_SHAPE_PROXYTYPE)
                 return;
-        float r=((btSphereShape*)sphere->getCollisionShape())->getRadius();
+        float r=((btSphereShape*)sphere->body->getCollisionShape())->getRadius();
         btTransform t;
-        sphere->getMotionState()->getWorldTransform(t);
+        sphere->body->getMotionState()->getWorldTransform(t);
         float mat[16];
         t.getOpenGLMatrix(mat);
         glPushMatrix();
@@ -116,7 +83,7 @@ void renderSphere(btRigidBody* sphere)
 
 
 
-void addPlane(int x, int y, int z, int nx, int ny, int nz, btRigidBody **BODY)
+void addPlane(char* NAME, float x, float y, float z, float nx, float ny, float nz, object **BODY)
 {
 	btTransform t;
 	t.setIdentity();
@@ -126,21 +93,22 @@ void addPlane(int x, int y, int z, int nx, int ny, int nz, btRigidBody **BODY)
 	btRigidBody::btRigidBodyConstructionInfo info(0.0,motion,plane);
 	btRigidBody* body = new btRigidBody(info);
 	world->addRigidBody(body);
-	*BODY = body;
+    *BODY = new object(body,false,NAME,2,0);
+    // strcpy(*BODY->name,NAME);
+    body->setUserPointer(*BODY);
 }
 
-void renderPlane(btRigidBody* plane, float x, float y, float z, float rx, float ry, float rz, float sx, float sy, float sz, int OBJECT)
+void renderPlane(object* plane, float x, float y, float z, float rx, float ry, float rz, float sx, float sy, float sz, int OBJECT)
 {
-        if(plane->getCollisionShape()->getShapeType()!=STATIC_PLANE_PROXYTYPE)
+        if(plane->body->getCollisionShape()->getShapeType()!=STATIC_PLANE_PROXYTYPE)
                 return;
         btTransform t;
-        plane->getMotionState()->getWorldTransform(t);
+        plane->body->getMotionState()->getWorldTransform(t);
         t.setOrigin(btVector3(x,y,z));
         float mat[16];
         t.getOpenGLMatrix(mat);
         glPushMatrix();
             glMultMatrixf(mat);     //translation,rotation
-			// glTranslatef(x, y, z);
 			glRotatef(rx, ry, rz, 0.0);
 			glScalef(sx, sy, sz);
 			glCallList(OBJECT);
@@ -148,15 +116,6 @@ void renderPlane(btRigidBody* plane, float x, float y, float z, float rx, float 
 }
 
 void initializeWorld(){
-    addPlane(0,0,0,0,1,0,&btFloor);
-    addPlane(-3000,2000,0,1,0,0,&btSideleft);
-    addPlane(3000,2000,0,-1,0,0,&btSideright);
-    addPlane(0,2000,-3000,0,0,1,&btSideback);
-    addPlane(0,2000,3000,0,0,-1,&btSidefront);
-
-    // addBox(50,100,50,0,0,0,1000.0,&btCar);
- 	addBox(100,100,100,-150.0f,20.0f,-200.0f,100.0,&btCarNew);
-  //   addBox(100,100,100,-150.0f,500.0f,-200.0f,500.0,&btTractor);
 
 	strcpy(filename , "../data/characters/car.obj");
     CAR = car.load(filename);
@@ -164,6 +123,7 @@ void initializeWorld(){
     CARNEW = carNew.load(filename);
     strcpy(filename , "../data/characters/tractor.obj");
     TRACTOR = tractor.load(filename);
+
     strcpy(filename, "../data/weapons/bullet.obj");
     BULLET = bullet.load(filename);
     strcpy(filename, "../data/weapons/landmine.obj");
@@ -199,14 +159,27 @@ void initializeWorld(){
 		strcpy(filename , "../data/world2/sidefront.obj");
 		SIDEFRONT = sidefront.load(filename);
 	}
+	strcpy(filename , "floor");
+    addPlane(filename,0,0,0,0,1,0,&btFloor);
+	strcpy(filename , "sidewall");
+    addPlane(filename,-3000,2000,0,1,0,0,&btSideleft);
+    addPlane(filename,3000,2000,0,-1,0,0,&btSideright);
+    addPlane(filename,0,2000,-3000,0,0,1,&btSideback);
+    addPlane(filename,0,2000,3000,0,0,-1,&btSidefront);
+
+	strcpy(filename , "player1");
+    addBox(filename,50,130,200, x1,0,z1, 1000.0,&btCar);
+	strcpy(filename , "player2");
+ 	addBox(filename,120,130,300, x2,15,z2, 1000.0,&btCarNew);
+    // addBox(filename,300,270,150, -500,60,-500, 500.0,&btTractor);
 }
 
 void drawWorld(){
 	long unsigned int i;
 	if(worldNum == 1){
-		// renderBox(btCar,x,0,z,-90+rotateCar, 0,1, 200,175,200, CAR);
-		// renderBox(btTractor, 200,185,0,210,0,1,50,50,50, TRACTOR);
-		// renderBox(btCarNew, -1500,20,-2000,210,0,1,50,50,50, CARNEW);
+		renderBox(btCar, x1,0,z1, -90+rotateCar1,0,1, 200,175,200, CAR);
+		renderBox(btCarNew, x2,15,x2, -90+rotateCar2,0,1, 50,50,50, CARNEW);
+		// renderBox(btTractor, -500,60,-500, 0,0,0, 50,50,50, TRACTOR);
 
 		renderPlane(btFloor, 0,0,0, 0,0,0, 3000,0,3000,FLOOR);
 		renderPlane(btSideleft,-3000,2000,0, -90,0,1, 3000,2000,0,SIDELEFT);
@@ -214,45 +187,33 @@ void drawWorld(){
 		renderPlane(btSideback, 0,2000,-3000, 0,0,0, 3000,2000,0,SIDEBACK);
 		renderPlane(btSidefront, 0,2000,3000, 0,0,0, 3000,2000,0,SIDEFRONT);
 
-		for(i=0; i<btLandmine.size(); i++){
-			glDisable(GL_TEXTURE_2D);
-				renderBox(btLandmine[i], camPosX,0,camPosY,0,0,0,25,25,25, LANDMINE);
-			glEnable(GL_TEXTURE_2D);
-		}
-		for(i=0; i<btBullet.size(); i++){
-			glDisable(GL_TEXTURE_2D);
-				renderSphere(btBullet[i]);
-			glEnable(GL_TEXTURE_2D);
-		}
+		glPushMatrix();								// WALL1
+			glRotatef(-15.0, 0.0, 1.0, 0.0);
+			glTranslatef(-1500.0f, 0.0f, 2500.0f);
+			glScalef(300,300,100);
+			glCallList(WALL);
+		glPopMatrix();
 
+		glPushMatrix();								// WALL2
+			glRotatef(25.0, 0.0, 1.0, 0.0);
+			glTranslatef(0.0f, 0.0f, 2500.0f);
+			glScalef(300,300,100);
+			glCallList(WALL);
+		glPopMatrix();
 
-		// glPushMatrix();								// WALL1
-		// 	glRotatef(-15.0, 0.0, 1.0, 0.0);
-		// 	glTranslatef(-1500.0f, 0.0f, 2500.0f);
-		// 	glScalef(300,300,100);
-		// 	glCallList(WALL);
-		// glPopMatrix();
+		glPushMatrix();								// SHED
+			glTranslatef(-2410.0f, 0.0f, -800.0f);
+			glRotatef(90.0, 0.0, 1.0, 0.0);
+			glScalef(150,100,200);
+			glCallList(SHED);			
+		glPopMatrix();
 
-		// glPushMatrix();								// WALL2
-		// 	glRotatef(25.0, 0.0, 1.0, 0.0);
-		// 	glTranslatef(0.0f, 0.0f, 2500.0f);
-		// 	glScalef(300,300,100);
-		// 	glCallList(WALL);
-		// glPopMatrix();
-
-		// glPushMatrix();								// SHED
-		// 	glTranslatef(-2410.0f, 0.0f, -800.0f);
-		// 	glRotatef(90.0, 0.0, 1.0, 0.0);
-		// 	glScalef(150,100,200);
-		// 	glCallList(SHED);			
-		// glPopMatrix();
-
-		// glPushMatrix();								// BASE
-		// 	glTranslatef(1000.0f, 0.0f,1500.0f);
-		// 	glRotatef(80.0, 0.0, 1.0, 0.0);
-		// 	glScalef(150,125,150);
-		// 	glCallList(BASE);
-		// glPopMatrix();
+		glPushMatrix();								// BASE
+			glTranslatef(1000.0f, 0.0f,1500.0f);
+			glRotatef(80.0, 0.0, 1.0, 0.0);
+			glScalef(150,125,150);
+			glCallList(BASE);
+		glPopMatrix();
 	}
 	else if(worldNum == 2){
 		glPushMatrix();								// CHARACTERS
@@ -283,7 +244,6 @@ void drawWorld(){
 			glCallList(WORLD2);
 		glPopMatrix();
 
-		// glDisable(GL_LIGHTING);
 		glPushMatrix();								//LEFT WALL
 			glRotatef(-90.0, 0.0, 1.0, 0.0);
 			glTranslatef(60.0f, 1900.0f,3900.0f);
@@ -309,18 +269,47 @@ void drawWorld(){
 			glScalef(3910,2000,0);
 			glCallList(SIDEFRONT);
 		glPopMatrix();
-		// glEnable(GL_LIGHTING);
 	}
+
+	for(i=0; i<btLandmine.size(); i++){
+		glDisable(GL_TEXTURE_2D);
+			renderBox(btLandmine[i], x,0,z, 0,0,0, 25,25,25, LANDMINE);
+		glEnable(GL_TEXTURE_2D);
+	}
+	for(i=0; i<btBullet.size(); i++){
+		glDisable(GL_TEXTURE_2D);
+			renderSphere(btBullet[i]);
+		glEnable(GL_TEXTURE_2D);
+	}
+
 	renderHUD();
 }
 
-void addLandmine()
+void addLandmine(int n)
 {
-    if(user1.landmineCount>0)
+	int flagLandmine = 0;
+	if(n==1){
+		x = x1;
+		z = z1;
+		if(player1.landmineCount>0){ 
+			flagLandmine = 1;
+	    	player1.landmineCount--;
+	    }
+	}
+	else if(n==2){
+		x = x2;
+		z = z2;
+		if(player2.landmineCount>0){ 
+			flagLandmine = 1;
+	    	player2.landmineCount--;
+	    }
+	}
+
+    if(flagLandmine == 1)
     {
     	btTransform t;
         t.setIdentity();
-        t.setOrigin(btVector3(camPosX,0.0,camPosZ));
+        t.setOrigin(btVector3(x,0,z));
         float mass = 1.0;
         btBoxShape* box=new btBoxShape(btVector3(10/2.0,5/2.0,10/2.0));
         btVector3 inertia(0,0,0);
@@ -332,17 +321,28 @@ void addLandmine()
         btRigidBody* body=new btRigidBody(info);
         world->addRigidBody(body);
         
-        btLandmine.push_back(body);
-
-	    user1.landmineCount--;
+        strcpy(filename,"landmine");
+        btLandmine.push_back(new object(body,false,filename,3,btLandmine.size()));
+        body->setUserPointer(btLandmine[btLandmine.size()-1]);
 	}
 }
 
-void addBullet()
+void addBullet(int n)
 {
-	// addBox(10,10,10,camPosX,0.0,camPosZ,1.0,&btBullet);
-	addSphere(5.0,camPosX,0.0,camPosZ,1.0);
+	if(n==1){
+		x = x1;
+		z = z1;
+		rotateCar = rotateCar1;
+	}
+	else if(n==2){
+		x = x2;
+		z = z2;
+		rotateCar = rotateCar2;
+	}	
+
+	strcpy(filename , "bullet");
+	addSphere(filename,2.5,x,50.0,z,0.5);
 	int size = btBullet.size();
-	btBullet[size-1]->setLinearVelocity(btVector3(sin(rotateCar*pi/180)*10000,100,cos(rotateCar*pi/180)*10000));
-    // bulletCount=1;
+	btBullet[size-1]->body->setLinearVelocity(btVector3(sin(rotateCar*pi/180)*5000,0,cos(rotateCar*pi/180)*5000));
+	btBullet[size-1]->body->setCollisionFlags(btBullet[size-1]->body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 }

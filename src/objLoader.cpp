@@ -228,7 +228,6 @@ int objloader::load(const char* filename){
                 ismaterial=false;
         else    //else we have
                 ismaterial=true;
-        std::cout << vertex.size() << " " << normals.size() << " " << faces.size() << " " << materials.size() << std::endl;     //test purposes
         //draw
         int num;
         num=glGenLists(1);                              //I generate a unique identifier for the list

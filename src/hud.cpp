@@ -3,14 +3,26 @@
 void renderHUD()
 {
   orthoSet();
-    glBindTexture(GL_TEXTURE_2D, healthBar);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0,0);  glVertex2f(10,300);
-      glTexCoord2f(1,0);  glVertex2f(30,300);
-      glTexCoord2f(1,1);  glVertex2f(30,435);
-      glTexCoord2f(0,1);  glVertex2f(10,435);
-    glEnd();
-    
+    if(viewport1==1 && viewport2==0){
+      glBindTexture(GL_TEXTURE_2D, healthBar);
+      glBegin(GL_QUADS);
+        glTexCoord2f(0,0);  glVertex2f(10,435-(player1.health/100)*135);
+        glTexCoord2f(1,0);  glVertex2f(30,435-(player1.health/100)*135);
+        glTexCoord2f(1,1);  glVertex2f(30,435);
+        glTexCoord2f(0,1);  glVertex2f(10,435);
+      glEnd();
+    }
+
+    if(viewport1==0 && viewport2==1){
+      glBindTexture(GL_TEXTURE_2D, healthBar);
+      glBegin(GL_QUADS);
+        glTexCoord2f(0,0);  glVertex2f(10,435-(player2.health/100)*135);
+        glTexCoord2f(1,0);  glVertex2f(30,435-(player2.health/100)*135);
+        glTexCoord2f(1,1);  glVertex2f(30,435);
+        glTexCoord2f(0,1);  glVertex2f(10,435);
+      glEnd();
+    }
+
     glBindTexture(GL_TEXTURE_2D, powerUp);
     glBegin(GL_QUADS);
       glTexCoord2f(0,0);  glVertex2f(750,405);
@@ -19,7 +31,19 @@ void renderHUD()
       glTexCoord2f(0,1);  glVertex2f(750,435);
     glEnd();
 
-    glBindTexture(GL_TEXTURE_2D, one);
+    if(player1.landmineCount==1)
+      glBindTexture(GL_TEXTURE_2D, one);
+    else if(player1.landmineCount==2)
+      glBindTexture(GL_TEXTURE_2D, two);
+    else if(player1.landmineCount==3)
+      glBindTexture(GL_TEXTURE_2D, three);
+    else if(player1.landmineCount==4)
+      glBindTexture(GL_TEXTURE_2D, four);
+    else if(player1.landmineCount==5)
+      glBindTexture(GL_TEXTURE_2D, five);
+    else if(player1.landmineCount==0)
+      glBindTexture(GL_TEXTURE_2D, five);
+
     glBegin(GL_QUADS);
       glTexCoord2f(0,0);  glVertex2f(745,430);
       glTexCoord2f(1,0);  glVertex2f(755,430);
@@ -35,28 +59,24 @@ void renderHUD()
       glTexCoord2f(0,1);  glVertex2f(750,385);
     glEnd();
 
-    glBindTexture(GL_TEXTURE_2D, two);
+    if(player1.missileCount==1)
+      glBindTexture(GL_TEXTURE_2D, one);
+    else if(player1.missileCount==2)
+      glBindTexture(GL_TEXTURE_2D, two);
+    else if(player1.missileCount==3)
+      glBindTexture(GL_TEXTURE_2D, three);
+    else if(player1.missileCount==4)
+      glBindTexture(GL_TEXTURE_2D, four);
+    else if(player1.missileCount==5)
+      glBindTexture(GL_TEXTURE_2D, five);
+    else if(player1.missileCount==0)
+      glBindTexture(GL_TEXTURE_2D, five);
+
     glBegin(GL_QUADS);
       glTexCoord2f(0,0);  glVertex2f(745,380);
       glTexCoord2f(1,0);  glVertex2f(755,380);
       glTexCoord2f(1,1);  glVertex2f(755,390);
       glTexCoord2f(0,1);  glVertex2f(745,390);
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, powerAir);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0,0);  glVertex2f(750,305);
-      glTexCoord2f(1,0);  glVertex2f(780,305);
-      glTexCoord2f(1,1);  glVertex2f(780,335);
-      glTexCoord2f(0,1);  glVertex2f(750,335);
-    glEnd();
-
-    glBindTexture(GL_TEXTURE_2D, four);
-    glBegin(GL_QUADS);
-      glTexCoord2f(0,0);  glVertex2f(745,330);
-      glTexCoord2f(1,0);  glVertex2f(755,330);
-      glTexCoord2f(1,1);  glVertex2f(755,340);
-      glTexCoord2f(0,1);  glVertex2f(745,340);
     glEnd();
   orthoReset();
 }

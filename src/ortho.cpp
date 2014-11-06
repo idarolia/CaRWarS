@@ -13,7 +13,6 @@ int loadTex(std::string fileName)
     return object;
 }
 
-
 void orthoSet(void)
 {
   glLoadIdentity();
